@@ -18,7 +18,7 @@ This SDK takes care of...
 2019-06-30 SDK Version 0.0.1
 
 ## Browser Coverage
-[broserlist](https://browserl.ist/?q=%3E1%25+and+not+ie+%3C%3D+11+and+not+op_mini+all)
+[browserlist](https://browserl.ist/?q=%3E1%25+and+not+ie+%3C%3D+11+and+not+op_mini+all)
 
 ## Installation
 Clone this repository, and put `bodybank-enterprise.min.js` in your project.
