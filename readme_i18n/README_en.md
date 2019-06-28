@@ -28,7 +28,7 @@ In your index html file, read the script above as below.
 <head>
   <meta charset="UTF-8">
   <title>Your awesome website</title>
-  <script type="text/javascript" src="./bodybank-enterprise.js"></script>
+  <script type="text/javascript" src="./bodybank-enterprise.min.js"></script>
 </head>
 ```
 
@@ -425,7 +425,7 @@ index.html
     <meta charset="UTF-8">
     <title>Sample</title>
     <link rel="stylesheet" href="css/style.css">
-    <script type="text/javascript" src="../bodybank-enterprise.js"></script>
+    <script type="text/javascript" src="../bodybank-enterprise.min.js"></script>
   </head>
   <body>
     <button id="show-list">getList</button><br>
