@@ -1,5 +1,5 @@
 # Bodygram SDK JS
 Select preferred language.
 
-[English](/readme/README_en.md)  
-[Japanese](/readme/README_jp.md)
+[English](/readme_i18n/README_en.md)  
+[Japanese](/readme_i18n/README_jp.md)
