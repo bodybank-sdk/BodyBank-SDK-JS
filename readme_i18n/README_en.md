@@ -10,8 +10,7 @@ This SDK takes care of...
 
 1. Creation & Restoration of token
 2. Creation of new estimation requests
-3. Subscription of estimation reqeusts' status
-4. Getting result of estimation requests
+3. Getting result of estimation requests
 
 > Note: NO UI IS PROVIDED BY THIS SDK.  
 
