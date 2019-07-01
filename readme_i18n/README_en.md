@@ -309,7 +309,7 @@ It takes `estimationParameter` and `callback` as arguments.
 `estimationParameter` includes age, height, weight, gender, frontImage, and sideImage.
 Any of them is essential and not allowed to be null or undefined.
 
-`callback` is for handling success or error.
+`callback` is for handling success or error.  
 Creating estimation request includes uploads of high resolution images, so it might take a long time to be complete.
 
 ```javascript
