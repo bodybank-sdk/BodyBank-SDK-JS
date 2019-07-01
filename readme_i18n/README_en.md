@@ -2,7 +2,8 @@
 Bodygram is a system for estimating body size of human with a few parameters.  
 You throw a "body size estimation request" (which we'll call just an "estimation request") to our server via this SDK, and after some seconds you'll receive an estimation result asyncrounously.
 
-> Note: This SDK is for browser use, not for server.  
+> Note: This SDK is developed assuming usecase on front-end, not server.  
+
 > Note: This SDK is made for modern mobile use, assuming ES6 (ECMAScript 2015) is supported.
 
 This SDK takes care of...
@@ -305,7 +306,11 @@ Status: completed
 Make estimation request by `createEstimationRequest` method.
 It takes `estimationParameter` and `callback` as arguments.
 
-Creating estimation request includes uploads of high resolution images, please pass callback function to handle success or error.
+`estimationParameter` includes age, height, weight, gender, frontImage, and sideImage.
+Any of them is essential and not allowed to be null or undefined.
+
+`callback` is for handling success or error.
+Creating estimation request includes uploads of high resolution images, so it might take a long time to be complete.
 
 ```javascript
 function callCreateEstimationRequest() {
@@ -332,6 +337,8 @@ function callCreateEstimationRequest() {
     heightInCm: document.getElementById("height").value,
     weightInKg: document.getElementById("weight").value,
     gender: bodybankGender,
+    frontImage: frontElem.files[0],
+    sideImage: sideElem.files[0],
     failOnAutomaticEstimationFailure: true
   }
   const callback = ({ request, errors }) => {
