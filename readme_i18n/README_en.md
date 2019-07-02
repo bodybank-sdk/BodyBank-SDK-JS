@@ -110,11 +110,12 @@ In order to use this, please tell us the API endpoint you want to be called afte
 
 Right now you can set only 1 endpoint.
 
-Given endpoint will be called when the estimation requests' status is...
+The endpoint will be called when the estimation requests' status becomes...
 
 1. requested (estimation request is created)
 2. requested -> pendingAutomaticEstimation (waiting for estimation)
 3. pendingAutomaticEstimation -> completed
+4. requested or pendingAutomaticEstimation -> failed
 
 We use POST method so that we can pass on estimation requests in request body.
 
@@ -296,6 +297,66 @@ Status: completed
     probabilityOfTotalLengthInHitZone: 100,
     probabilityOfWaistCircumferenceInHitZone: 96,
     probabilityOfWristCircumferenceInHitZone: 86
+  }
+}
+```
+
+Status: failed
+```javascript
+{
+  notification_type: 'ESTIMATION_STATUS_UPDATED',
+  request: {
+    age: 33,
+    bicep_circumference: null,
+    calf_circumference: null,
+    chest_circumference: null,
+    created_at: 1561708238,
+    updated_at: 1561708242,
+    error_code: 'CONFIDENCE_INVALID_FRONT_IMAGE',
+    error_detail: null,
+    front_image_url: null,
+    front_thumbnail_image_url: null,
+    gender: 'male',
+    height: 162,
+    high_hip_circumference: null,
+    hip_circumference: null,
+    id: 'uniqueRequestId',
+    inseam_length: null,
+    knee_circumference: null,
+    neck_circumference: null,
+    outseam_length: null,
+    race: 'human',
+    shoulder_width: null,
+    side_image_url: null,
+    side_thumbnail_image_url: null,
+    sleeve_length: null,
+    backlength: null,
+    underbust: null,
+    status: 'failed',
+    thigh_circumference: null,
+    mid_thigh_circumference: null,
+    total_length: null,
+    user_id: 'uniqueUserId',
+    waist_circumference: null,
+    weight: 70,
+    wrist_circumference: null,
+    fail_on_automatic_estimation_failure: true,
+    probabilityOfBicepCircumferenceInHitZone: 88,
+    probabilityOfCalfCircumferenceInHitZone: 90,
+    probabilityOfChestCircumferenceInHitZone: 100,
+    probabilityOfHighHipCircumferenceInHitZone: 90,
+    probabilityOfHipCircumferenceInHitZone: 77,
+    probabilityOfInseamLengthInHitZone: 94,
+    probabilityOfKneeCircumferenceInHitZone: 94,
+    probabilityOfMidThighCircumferenceInHitZone: 92,
+    probabilityOfNeckCircumferenceInHitZone: 92,
+    probabilityOfOutseamLengthInHitZone: 92,
+    probabilityOfShoulderWidthInHitZone: 75,
+    probabilityOfSleeveLengthInHitZone: 79,
+    probabilityOfThighCircumferenceInHitZone: 98,
+    probabilityOfTotalLengthInHitZone: 100,
+    probabilityOfWaistCircumferenceInHitZone: 100,
+    probabilityOfWristCircumferenceInHitZone: 77
   }
 }
 ```
