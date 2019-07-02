@@ -74,7 +74,7 @@ Default Token Providerを利用する場合、開発ステップは下記のよ�
 詳細を解説します。
 
 仮に、貴社でお持ちのAPIサーバーが`https://awesome-api.com`にて動作しているとします。
-Bodygramのトークン取得を行うエンドポイントは`https://awesome-api.com/bodygram/token`に対するGETリクエストで叩けるとしましょう。
+Bodygramのトークン取得を行うエンドポイントは`https://awesome-api.com/bodygram/token`に対するGETリクエストで叩けるとします。
 
 上記エンドポイントにルーティングされるファイルに下記のような実装を行います。
 (仮にNode.js + Expressでの実装だとします)
@@ -130,7 +130,7 @@ tokenProvider.restoreTokenBlock = async () => {
 
 `restoreTokenBlock`は、トークンの期限が切れそうなとき、もしくは切れた時に自動的に呼ばれる関数です。
 
-このように、貴社独自のエンドポイントを作成して頂く理由は、apiEndpoint及びapiKeyが外部に露出しないことを保証するためです。
+このように貴社独自のエンドポイントを作成して頂く理由は、apiEndpoint及びapiKeyが外部に露出しないことを保証するためです。
 
 ### SDKの初期化
 リクエストの作成や推定結果の取得を行う前に、`BodyBankEnterprise`を初期化する必要があります。
