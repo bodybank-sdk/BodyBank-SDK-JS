@@ -38,61 +38,100 @@ Include the `bodybank-config.json` file into your project.
 The file is provided after making a contract.
 
 ### Token Provider 
-Instantiate BodyBankEnterprise and get defaultTokenProvider.  
-This token provider will take care of token which is necessary for making request.  
+Token Provider is a class which does issueing and managing of token, which is for accessing Bodygram's backend resource. We have 2 kinds of tokenProvider.
 
-Set `restoreTokenBlock` to defaultTokenProvider.  
-This block is called whenever a token is nearly expired or expired.
+- Default Token Provider
+- Direct Token Provider
 
-> Note: Never directly write API_URL and API_KEY in your frontend. With those, anyone can request token for manipulating estimation data. Instead of doing so, prepare your own API endpoint on your server in which call the API_URL.  
-> In the case below, we use firebase as an API server, and there're no API_URL and API_KEY exposed to frontend.
+The former is for production, another is for development environment.
+
+We'll see both of them from now on.
+
+#### Direct Token Provider
+First explanation is for Direct Token Provider, that is for development env.
+
+Because this functionality is for only development, please do implement with Default Token Provider before you release on production.
+
+`DirectTokenProvider` is a descendant of `DefaultTokenProvider`, and it's easened to use.
+
+```javascript
+const bodybank = new BodyBankEnterprise()
+const tokenProvider = bodybank.getDirectTokenProvider("https://api.<SHORT IDENTIFIER>.enterprise.bodybank.com", "YOUR API KEY")
+
+tokenProvider.tokenDuration = 86400
+tokenProvider.userId = "encryptedUserId"
+```
+
+Just a few line of codes are required to setup.
+
+#### Default Token Provider
+Next is for Default Token Provider for production use.
+
+When you develop with it, the step will be like...
+
+1. Create a new endpoint and implement the process of fetching token.
+2. From the project in which you use Bodygram, call the endpoint you've created.
+
+Detail below.
+
+Assume that you have an API server on `https://awesome-api.com`.  
+There might be an endpoint for fetching Bodygram token, which can be called by GET request to `https://awesome-api.com/bodygram/token`.
+
+The endpoint implementation might be look like below.
+(Example is made by Node.js and Express.)
+
+```javascript
+const rp = require('request-promise')
+
+export default async function (req, res) {
+  const apiKey = "YOUR API KEY"
+  const apiEndpoint = "https://api.<SHORT IDENTIFIER>.enterprise.bodybank.com"
+  const userId = 'encryptedUserId' // Fixed value for easy
+  const options = {
+    headers: { "x-api-key": apiKey },
+    json: { user_id: userId }
+  }
+
+  const tokenRes = await rp.post(apiEndpoint, options)
+  
+  res.send(tokenRes.content.token);
+}
+```
+
+You'll throw POST request to the `apiEndpoint` with `apiKey` and `userId`.
+
+When it's done, go back to front-end project and implement below.
 
 ```javascript
 const bodybank = new BodyBankEnterprise()
 const tokenProvider = bodybank.getDefaultTokenProvider()
 
-tokenProvider.restoreTokenBlock = async (completion) => {
+tokenProvider.restoreTokenBlock = async () => {
   try {
-    const getToken = firebase.functions().httpsCallable('getBodyBankJWTToken')
+    const tokenEndpoint = 'https://awesome-api.com/bodygram/token'
+    const options = { method: "GET" }
+    const res = await fetch(tokenEndpoint, options)
     const {
-      data: {
-        jwt_token,
-        identity_id
+      content: {
+        token: {
+          jwt_token,
+          identity_id
+        }
       }
-    } = await getToken().catch((err) => { throw err })
+    } = await res.json()
 
-    const token = bodybank.genBodyBankToken(jwt_token, identity_id)
-
-    if (completion) {
-      return completion({ token })
-    }
-
-    return token
+    return bodybank.genBodyBankToken(jwt_token, identity_id)
   } catch (err) {
     const error = new Error(`Failed to fetch bodybank token.\nreason: ${err.message}`)
-
-    if (completion) {
-      return completion({ error })
-    }
 
     throw error
   }
 }
 ```
 
-### DirectTokenProvider for development use only
-`DirectTokenProvider` is a descendent of `DefaultTokenProvider`.  
-Initialized by passing API_URL and API_KEY. Then this token provider will automatically generate restoreTokenBlock.
+`restoreTokenBlock` is a function which is called whenever a token is nearly expired or expired.
 
-> Note: DirectTokenProvider is only for development. Please don't use it on production.
-
-```javascript
-const bodybank = new BodyBankEnterprise()
-const tokenProvider = bodybank.getDirectTokenProvider("https://api.<SHORT IDENTIFIER>.enterprise.bodybank.com", "API KEY")
-
-tokenProvider.tokenDuration =  86400
-tokenProvider.userId = "encryptedUserId"
-```
+You have to prepare your own api for fetching Bodygram token so as not to expose your `apiEndpoint` and `apiKey` to malicious outsiders.
 
 ### SDK initialization
 Initialize BodyBankEnterprise before creating request.  
@@ -368,8 +407,43 @@ It takes `estimationParameter` and `callback` as arguments.
 `estimationParameter` includes age, height, weight, gender, frontImage, and sideImage.
 Any of them is essential and not allowed to be null or undefined.
 
+estimationParameter
+```javascript
+{
+  age: 20,
+  heightInCm: 170,
+  weightInKg: 60,
+  gender: bodybank.Gender.male,
+  frontImage: frontFileObj,
+  sideImage: sideFileObj
+}
+```
+
 `callback` is for handling success or error.  
 Creating estimation request includes uploads of high resolution images, so it might take a long time to be complete.
+
+callback
+```javascript
+const estimationCallback = ({ request, errors }) => {
+  if (errors && errors.length) {
+    // エラーハンドリング
+    errors.forEach((error) => {
+      console.log(error)
+    })
+
+    return
+  }
+
+  if (!request) {
+    throw new Error('Request should be returned after creation completed.')
+  }
+
+  console.log(request.id) // requestId
+  console.log(request.user_id) // userId
+}
+```
+
+Below is a sample which is implementing creation of estimation request.
 
 ```javascript
 function callCreateEstimationRequest() {
