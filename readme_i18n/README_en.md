@@ -426,7 +426,7 @@ callback
 ```javascript
 const estimationCallback = ({ request, errors }) => {
   if (errors && errors.length) {
-    // エラーハンドリング
+    // Do some error handling here.
     errors.forEach((error) => {
       console.log(error)
     })
