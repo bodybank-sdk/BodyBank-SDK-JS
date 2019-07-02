@@ -50,7 +50,6 @@ This block is called whenever a token is nearly expired or expired.
 ```javascript
 const bodybank = new BodyBankEnterprise()
 const tokenProvider = bodybank.getDefaultTokenProvider()
-const userId = "encryptedUserId"
 
 tokenProvider.restoreTokenBlock = async (completion) => {
   try {
@@ -369,7 +368,7 @@ As you can see, you'll receive created estimation request as an argument of call
 We recommend to save the id in your database ASAP after receiving it, for it's necessary to get the result of estimation.
 
 ### Get estimation request
-In order to get particular estimation request, you can call `getEstimationRequest` method.
+In order to get particular estimation request's data, you can call `getEstimationRequest` method.
 
 Estimation result is included in the request object you get from this method.
 
