@@ -659,6 +659,8 @@ SDKから返される可能性のあるエラー及び詳細の理由は下記�
 - NotInitialized: SDKが初期化されていない
 - NoTokenProvider: tokenProviderが渡されていない
 - FailedToInitialize: 何らかの理由でSDK初期化に失敗
+- LocalStorageNotFound: localStorageが見つからない (ブラウザはlocalStorageを持っているはず)
+- FailedToSignIn: AWSを利用したサインインが失敗
 
 #### EstimationError
 - InvalidResponse: Bodygramサーバーから不正なレスポンスが返却された

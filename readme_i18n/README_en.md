@@ -659,6 +659,8 @@ Every Error is extended from built-in Error class.
 - NotInitialized: BodyBankEnterprise is not initialized
 - NoTokenProvider: tokenProvider is not supplied to BodyBankEnterprise
 - FailedToInitialize: Error while initializing BodyBankEnterprise
+- LocalStorageNotFound: localStorage was not found (should exist on browser)
+- FailedToSignIn: Error while signing in with AWS
 
 #### EstimationError
 - InvalidResponse: Invalid response from bodygram server
